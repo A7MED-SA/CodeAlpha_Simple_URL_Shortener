@@ -1,85 +1,87 @@
-# ShortLink · رابط مختصر
+# ShortLink · URL Shortener
 
-مُختصر روابط مبني على **Node.js + Express + TypeScript + Prisma + PostgreSQL**، مع واجهة أمامية داكنة عصرية.
+> 🇬🇧 English version — [النسخة العربية →](README.ar.md)
 
-## المميزات
+A modern URL shortener built with **Node.js + Express + TypeScript + Prisma + PostgreSQL**, featuring a dark-themed glassmorphism UI.
 
-- **توليد روابط قصيرة** — باستخدام NanoID (خوارزمية آمنة وسريعة)
-- **إعادة توجيه فوري** — HTTP 301 مع تتبع عدد النقرات
-- **معلومات الرابط** — استعلام عن الرابط الأصلي وعدد الزيارات والتاريخ
-- **حذف الرابط** — إمكانية حذف الرابط المختصر
-- **التحقق من الصلاحية** — يدعم `expiresAt` للروابط المؤقتة
-- **منع التكرار** — إرجاع الرابط المختصر نفسه إذا كان الرابط الأصلي موجودًا
-- **معدل طلبات (Rate Limiting)** — حماية من الإساءة باستخدام `express-rate-limit`
-- **أمان** — Helmet للرؤوس الأمنية و CORS للتحكم بالنطاقات المسموحة
-- **توثيق Zod** — التحقق من صحة البيانات في طبقة الـ API
-- **واجهة أمامية** — تصميم داكن حديث (Glassmorphism + تدرجات لونية + نسخ بنقرة واحدة)
+## Features
 
-## التقنيات
+- **Short link generation** — NanoID-based (secure & fast)
+- **Instant redirect** — HTTP 301 with click tracking
+- **Link info** — query original URL, visit count, timestamps
+- **Link deletion** — remove shortened links
+- **Expiration support** — `expiresAt` for time-limited links
+- **Duplicate prevention** — returns existing short code for the same URL
+- **Rate limiting** — protection via `express-rate-limit`
+- **Security** — Helmet for HTTP headers, CORS for domain control
+- **Zod validation** — request body validation at the API layer
+- **Frontend UI** — modern dark design (glassmorphism, gradients, one-click copy)
 
-| التقنية | الاستخدام |
+## Tech Stack
+
+| Technology | Purpose |
 |---|---|
-| **Express 5** | إطار عمل الخادم |
-| **TypeScript 6** | لغة البرمجة مع أنماط صارمة |
-| **Prisma 7** | ORM لإدارة قاعدة البيانات |
-| **PostgreSQL** | قاعدة البيانات العلائقية |
-| **Zod 4** | التحقق من صحة البيانات |
-| **NanoID** | توليد أكواد عشوائية آمنة |
-| **Helmet** | أمان HTTP headers |
-| **express-rate-limit** | تحديد معدل الطلبات |
-| **tsx** | تشغيل TypeScript مباشرة في بيئة التطوير |
+| **Express 5** | Web framework |
+| **TypeScript 6** | Language with strict mode |
+| **Prisma 7** | ORM & database management |
+| **PostgreSQL** | Relational database |
+| **Zod 4** | Schema validation |
+| **NanoID** | Secure random ID generation |
+| **Helmet** | HTTP security headers |
+| **express-rate-limit** | Request throttling |
+| **tsx** | Dev server (TypeScript execution) |
 
-## هيكل المشروع
+## Project Structure
 
 ```
 src/
 ├── config/
-│   ├── env.ts          # إعدادات البيئة (Zod validation)
-│   └── database.ts     # اتصال Prisma مع PostgreSQL
+│   ├── env.ts          # Environment config (Zod-validated)
+│   └── database.ts     # Prisma client with PostgreSQL adapter
 ├── repositories/
-│   └── urlRepository.ts # طبقة الوصول للبيانات (CRUD)
+│   └── urlRepository.ts # Data access layer (CRUD)
 ├── services/
-│   ├── urlService.ts   # منطق الأعمال
-│   └── codeGenerator.ts # توليد الأكواد المختصرة
+│   ├── urlService.ts   # Business logic
+│   └── codeGenerator.ts # Short code generation
 ├── controllers/
-│   └── urlController.ts # معالجة الطلبات والردود
+│   └── urlController.ts # Request/response handling
 ├── routes/
-│   ├── index.ts        # تجميع المسارات
-│   └── urlRoutes.ts    # مسارات API
+│   ├── index.ts        # Route aggregation
+│   └── urlRoutes.ts    # API route definitions
 ├── middleware/
-│   ├── validation.ts   # التحقق من صحة البيانات
-│   ├── errorHandler.ts # معالجة الأخطاء
-│   └── rateLimiter.ts  # تحديد معدل الطلبات
+│   ├── validation.ts   # Zod-based request validation
+│   ├── errorHandler.ts # Global error handling
+│   └── rateLimiter.ts  # Rate limiting middleware
 ├── schemas/
-│   └── urlSchema.ts    # مخططات Zod
+│   └── urlSchema.ts    # Zod validation schemas
 ├── utils/
-│   ├── constants.ts    # الثوابت (HTTP_STATUS, alphabet...)
-│   └── apiResponse.ts  # توحيد شكل الردود
+│   ├── constants.ts    # HTTP status codes, alphabet, limits
+│   └── apiResponse.ts  # Unified response format
 ├── public/
-│   ├── index.html      # الواجهة الأمامية
-│   ├── style.css       # أنماط CSS
-│   └── app.js          # منطق الواجهة
-├── app.ts              # إعداد Express
-└── server.ts           # نقطة الدخول
+│   ├── index.html      # Frontend UI
+│   ├── style.css       # Glassmorphism dark theme
+│   └── app.js          # Frontend logic
+├── app.ts              # Express app setup
+└── server.ts           # Entry point
 ```
 
-## المتطلبات
+## Requirements
 
 - **Node.js** >= 18
-- **PostgreSQL** >= 14 (أو Docker)
-- **npm** أو **yarn**
+- **PostgreSQL** >= 14 (or Docker)
+- **npm** or **yarn**
 
-## التشغيل
+## Setup
 
-### 1. تثبيت الاعتماديات
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2. إعداد قاعدة البيانات
+### 2. Start PostgreSQL
 
-**باستخدام Docker (مُوصى به للتطوير):**
+**Using Docker (recommended for development):**
 
 ```bash
 docker run -d --name url-shortener-db \
@@ -90,53 +92,51 @@ docker run -d --name url-shortener-db \
   pgvector/pgvector:pg16
 ```
 
-**أو باستخدام PostgreSQL محلي:**
+**Or use a local PostgreSQL** instance — create a database named `url_shortener` and make sure your `.env` matches.
 
-أنشئ قاعدة بيانات باسم `url_shortener` وتأكد من أن بيانات الاتصال تطابق ملف `.env`.
-
-### 3. إعداد متغيرات البيئة
+### 3. Configure environment
 
 ```bash
-cp .env .env.example   # إذا لم يكن .env موجودًا
+cp .env .env.example   # if .env doesn't exist
 ```
 
-المتغيرات المطلوبة في `.env`:
+Required environment variables in `.env`:
 
-| المتغير | القيمة الافتراضية | الشرح |
+| Variable | Default | Description |
 |---|---|---|
-| `PORT` | `3000` | منفذ الخادم |
-| `NODE_ENV` | `development` | البيئة |
-| `DATABASE_URL` | — | رابط اتصال PostgreSQL |
-| `BASE_URL` | `http://localhost:3000` | الرابط الأساسي للروابط المختصرة |
-| `SHORT_CODE_LENGTH` | `6` | طول الكود المختصر |
-| `RATE_LIMIT_WINDOW_MS` | `900000` | نافذة معدل الطلبات (15 دقيقة) |
-| `RATE_LIMIT_MAX_REQUESTS` | `100` | الحد الأقصى للطلبات لكل نافذة |
+| `PORT` | `3000` | Server port |
+| `NODE_ENV` | `development` | Environment |
+| `DATABASE_URL` | — | PostgreSQL connection string |
+| `BASE_URL` | `http://localhost:3000` | Base URL for shortened links |
+| `SHORT_CODE_LENGTH` | `6` | Short code character length |
+| `RATE_LIMIT_WINDOW_MS` | `900000` | Rate limit window (15 min) |
+| `RATE_LIMIT_MAX_REQUESTS` | `100` | Max requests per window |
 
-### 4. ترحيل قاعدة البيانات
+### 4. Run database migration
 
 ```bash
 npm run db:migrate
 ```
 
-### 5. تشغيل الخادم
+### 5. Start the server
 
-**تطوير (مع إعادة تحميل تلقائي):**
+**Development (with hot reload):**
 
 ```bash
 npm run dev
 ```
 
-**إنتاج:**
+**Production:**
 
 ```bash
 npm run build && npm start
 ```
 
-الخادم يعمل على: `http://localhost:3000`
+Server runs at: `http://localhost:3000`
 
 ## API
 
-### إنشاء رابط مختصر
+### Create short URL
 
 ```
 POST /api/v1/shorten
@@ -147,7 +147,7 @@ Content-Type: application/json
 }
 ```
 
-**الرد:**
+**Response:**
 ```json
 {
   "success": true,
@@ -160,21 +160,21 @@ Content-Type: application/json
 }
 ```
 
-### إعادة التوجيه
+### Redirect
 
 ```
 GET /:code
 ```
 
-يعيد توجيه HTTP 301 إلى الرابط الأصلي.
+HTTP 301 redirect to the original URL. Click count is incremented.
 
-### معلومات الرابط
+### Get URL info
 
 ```
 GET /api/v1/urls/:code
 ```
 
-**الرد:**
+**Response:**
 ```json
 {
   "success": true,
@@ -189,13 +189,13 @@ GET /api/v1/urls/:code
 }
 ```
 
-### حذف الرابط
+### Delete URL
 
 ```
 DELETE /api/v1/urls/:code
 ```
 
-**الرد:**
+**Response:**
 ```json
 {
   "success": true,
@@ -204,18 +204,30 @@ DELETE /api/v1/urls/:code
 }
 ```
 
-## الأوامر
+## Available Scripts
 
-| الأمر | الشرح |
+| Command | Description |
 |---|---|
-| `npm run dev` | تشغيل في بيئة التطوير مع tsx watch |
-| `npm run build` | ترجمة TypeScript إلى JavaScript |
-| `npm start` | تشغيل الإصدار المُجمّع |
-| `npm run db:migrate` | تشغيل ترحيلات Prisma |
-| `npm run db:push` | دفع الـ schema مباشرة إلى قاعدة البيانات |
-| `npm run db:studio` | فتح Prisma Studio (واجهة رسومية للبيانات) |
-| `npm run db:generate` | إعادة توليد عميل Prisma |
+| `npm run dev` | Start dev server with tsx watch |
+| `npm run build` | Compile TypeScript to JavaScript |
+| `npm start` | Run compiled production build |
+| `npm run db:migrate` | Run Prisma migrations |
+| `npm run db:push` | Push schema directly to database |
+| `npm run db:studio` | Open Prisma Studio (GUI data browser) |
+| `npm run db:generate` | Regenerate Prisma client |
 
-## الترخيص
+## Error Response Format
+
+All errors follow a consistent format:
+
+```json
+{
+  "success": false,
+  "message": "Error description",
+  "errors": ["Field-specific error messages"]
+}
+```
+
+## License
 
 ISC
